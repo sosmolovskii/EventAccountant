@@ -1,12 +1,12 @@
 package oss.utility.eventaccontant;
 
 /**
- * Collects and calculate statistics about the occurrence of events in the system
+ * Calculate event amount statistics
  */
 public interface EventAccountant {
 
     /**
-        Processes new Event
+        Process event
      */
     void processEvent();
 
