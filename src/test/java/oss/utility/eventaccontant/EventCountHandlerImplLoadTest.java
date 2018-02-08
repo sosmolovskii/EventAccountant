@@ -2,8 +2,8 @@ package oss.utility.eventaccontant;
 
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -29,8 +29,12 @@ public class EventCountHandlerImplLoadTest {
                     }
                 });
 
-        assertEquals("There are no calculated events", THREAD_COUNT*EVENT_COUNT_PER_THREAD, handler.getEventAmount(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond()));
-        assertTrue("Load factor is too low", 10000 <= handler.getEventAmount(Instant.now().minus(1, ChronoUnit.MINUTES).getEpochSecond())/60);
-        System.out.println("Average events count per second:" + handler.getEventAmount(Instant.now().minus(1, ChronoUnit.MINUTES).getEpochSecond())/60);
+        assertEquals("There are no calculated events", THREAD_COUNT*EVENT_COUNT_PER_THREAD,
+                handler.getEventAmount(Instant.now().minus(Duration.ofDays(1)).getEpochSecond()));
+
+        long averageCount =
+                handler.getEventAmount(Instant.now().minus(Duration.ofMinutes(1)).getEpochSecond()) / 60;
+        assertTrue("Load factor is too low", 10000 <= averageCount);
+        System.out.println("Average events count per second:" + averageCount);
     }
 }

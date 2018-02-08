@@ -1,7 +1,7 @@
 package oss.utility.eventaccontant;
 
+import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -30,7 +30,7 @@ public class EventCountHandlerImpl implements EventCountHandler {
 
     @Override
     public void removeExcess() {
-        long border = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
+        long border = Instant.now().minus(Duration.ofDays(1)).getEpochSecond();
         repository.entrySet().removeIf(entry -> entry.getKey() < border);
     }
 }
