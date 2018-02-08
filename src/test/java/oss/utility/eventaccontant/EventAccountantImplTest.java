@@ -2,6 +2,8 @@ package oss.utility.eventaccontant;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.assertTrue;
 
 
@@ -9,24 +11,37 @@ public class EventAccountantImplTest {
 
     @Test
     public void zeroEventTest() {
-        EventAccountantImpl accountant = new EventAccountantImpl();
-
-        assertTrue("There are no events happened per last minute", accountant.getEventAmountPerLastMinute() == 0);
-        assertTrue("There are no events happened per last hour", accountant.getEventAmountPerLastHour() == 0);
-        assertTrue("There are no events happened per last day", accountant.getEventAmountPerLastDay() == 0);
-
+        assertEventCount(new EventAccountantImpl(), 0);
     }
 
     @Test
     public void oneEventTest() {
         EventAccountantImpl accountant = new EventAccountantImpl();
 
-        accountant.newEvent();
+        accountant.processEvent();
 
-        assertTrue("There is 1 event happened per last minute", accountant.getEventAmountPerLastMinute() == 1);
-        assertTrue("There are no events happened per last hour", accountant.getEventAmountPerLastHour() == 0);
-        assertTrue("There are no events happened per last day", accountant.getEventAmountPerLastDay() == 0);
-
+        assertEventCount(accountant, 1);
     }
 
+    @Test
+    public void severalEventTest() {
+        EventAccountantImpl accountant = new EventAccountantImpl();
+
+        int i = 0;
+        for (; i < new Random().nextInt(100); i++) {
+            accountant.processEvent();
+        }
+
+        assertEventCount(accountant, i);
+    }
+
+
+    private void assertEventCount(EventAccountantImpl accountant, long count) {
+        assertTrue("There are " + count + " events happened per last minute",
+                accountant.getEventAmountPerLastMinute() == count);
+        assertTrue("There are " + count + " events happened per last hour",
+                accountant.getEventAmountPerLastHour() == count);
+        assertTrue("There are " + count + " events happened per last day",
+                accountant.getEventAmountPerLastDay() == count);
+    }
 }

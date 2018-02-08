@@ -29,9 +29,9 @@ public class EventCountHandlerTest extends Assert {
 
     @DataPoints
     public static Object[][] isEmptyData = new Object[][] {
-            { getSecondInPast(now, 1, ChronoUnit.DAYS), 3L },
-            { getSecondInPast(now, 1, ChronoUnit.HOURS), 2L },
-            { getSecondInPast(now, 1, ChronoUnit.MINUTES), 1L }
+            { "last day", getSecondInPast(now, 1, ChronoUnit.DAYS), 3L },
+            { "last hour", getSecondInPast(now, 1, ChronoUnit.HOURS), 2L },
+            { "last minute", getSecondInPast(now, 1, ChronoUnit.MINUTES), 1L }
     };
 
     private static Long getSecondInPast(Instant now, int i, ChronoUnit halfDays) {
@@ -40,6 +40,6 @@ public class EventCountHandlerTest extends Assert {
 
     @Theory
     public void logicTest(final Object... testData) {
-        assertTrue("", handler.getEventAmount((Long)testData[0]) == (Long)testData[1]);
+        assertTrue("Expected " + testData[2] + " events per " + testData[0], handler.getEventAmount((Long)testData[1]) == (Long)testData[2]);
     }
 }
