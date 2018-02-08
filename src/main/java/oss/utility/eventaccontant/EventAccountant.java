@@ -1,11 +1,14 @@
 package oss.utility.eventaccontant;
 
+/**
+ * Collects and calculate statistics about the occurrence of events in the system
+ */
 public interface EventAccountant {
 
     /**
         Processes new Event
      */
-    void newEvent();
+    void processEvent();
 
     /**
      * Counts events that occurred in the last 60 seconds

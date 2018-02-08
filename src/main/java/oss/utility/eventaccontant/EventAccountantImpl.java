@@ -1,27 +1,32 @@
 package oss.utility.eventaccontant;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 /**
- *  Implements {@link oss.utility.eventaccontant.EventAccountant} using {@link java.util.concurrent.ConcurrentHashMap}
+ *  Implements {@link oss.utility.eventaccontant.EventAccountant} using {@link EventCountHandlerImpl}
  */
 public class EventAccountantImpl implements EventAccountant {
 
-    @Override
-    public void newEvent() {
+    private EventCountHandler handler = new EventCountHandlerImpl();
 
+    @Override
+    public void processEvent() {
+        handler.addEvent(Instant.now().getEpochSecond());
     }
 
     @Override
     public long getEventAmountPerLastMinute() {
-        return 0;
+        return handler.getEventAmount(Instant.now().minus(1, ChronoUnit.MINUTES).getEpochSecond());
     }
 
     @Override
     public long getEventAmountPerLastHour() {
-        return 0;
+        return handler.getEventAmount(Instant.now().minus(1, ChronoUnit.HOURS).getEpochSecond());
     }
 
     @Override
     public long getEventAmountPerLastDay() {
-        return 0;
+        return handler.getEventAmount(Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond());
     }
 }
